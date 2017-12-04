@@ -2,4 +2,8 @@
     <string name="app_name">assignment5</string>
     <string name="temperature">Temperature</string>
     <string name="humidity">Humidity</string>
+    <string name="precipitation" />
+    <string name="windspeed" />
+    <string name="longitude" />
+    <string name="latitude" />
 </resources>

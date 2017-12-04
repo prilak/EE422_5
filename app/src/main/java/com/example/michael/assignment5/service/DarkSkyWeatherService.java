@@ -4,6 +4,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 
 import com.example.michael.assignment5.data.Currently;
+import com.example.michael.assignment5.data.NextFive;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -25,19 +26,29 @@ public class DarkSkyWeatherService {
     private WeatherServiceCallback callback;
     private String location;
     private Exception error;
-
-    public DarkSkyWeatherService(WeatherServiceCallback callback){
+    private int code;
+    private String date;
+    public DarkSkyWeatherService(WeatherServiceCallback callback, int code, String date){
         this.callback = callback;
+        this.code = code;
+        this.date = date;
     }
     public String getLocation(){
         return location;
     }
-    public void refreshWeather(String location){
+    public void refreshWeather(final String location){
         new AsyncTask<String, Void, String>() {
             @Override
             protected String doInBackground(String... strings) {
+                String endpoint;
                 //String YQL = String.format("");
-                String endpoint = String.format("https://api.darksky.net/forecast/423940d65ba228a7ac1119e2861fe408/42.3601,-71.0589");
+                if(code <= 3){
+                    endpoint = String.format("https://api.darksky.net/forecast/423940d65ba228a7ac1119e2861fe408/" + location);
+
+                } else {
+                    endpoint = String.format("https://api.darksky.net/forecast/423940d65ba228a7ac1119e2861fe408/" + location + "," + date);
+
+                }
                 try {
                     URL url = new URL(endpoint);
                     URLConnection connection = url.openConnection();
@@ -66,16 +77,21 @@ public class DarkSkyWeatherService {
 
                 try {
                     JSONObject data = new JSONObject(s);
-                    JSONObject queryResults = data.optJSONObject("query");
-//                    int code = queryResults.optInt("code");
-//                    if(code == 400){
-//                        callback.serviceFailure(new LocationWeatherException("This location does not exist."));
-//                        return;
-//                    }
-                    Currently currently = new Currently();
-                    currently.populate(data.optJSONObject("currently"));
+                    switch (code){
+                        case 0:
+                            Currently currently = new Currently();
+                            currently.populate(data.optJSONObject("currently"));
+                            callba ck.serviceSuccess(currently);
+                            break;
+                        case 1:
+//                            NextFive nextFive = new NextFive();
+//                            nextFive.populate(data.optJSONObject("hourly"));
+//                            callback.serviceSuccess(nextFive);
+                        case 2:
+                        case 3:
+                        case 4:
+                    }
 
-                    callback.serviceSuccess(currently);
                 } catch (JSONException e) {
                     callback.serviceFailure(e);
                 }
