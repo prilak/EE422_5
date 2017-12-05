@@ -10,12 +10,12 @@ import java.util.ArrayList;
  */
 
 public class NextFive implements JSONPopulator{
-    JSONArray times;
-    ArrayList temperatures;
+    private JSONArray times;
+    private ArrayList<Double> temperatures;
     @Override
     public void populate(JSONObject data) {
 
-        temperatures = new ArrayList();
+        temperatures = new ArrayList<Double>();
         times = data.optJSONArray("data");
         for(int i = 0; i < 5; i++){
             JSONObject time = times.optJSONObject(i);
@@ -23,7 +23,7 @@ public class NextFive implements JSONPopulator{
         }
     }
 
-    public ArrayList getTemperatures() {
+    public ArrayList<Double> getTemperatures() {
         return temperatures;
     }
 }

@@ -28,7 +28,10 @@
             android:enabled="true"
             android:exported="true" />
 
-        <activity android:name=".NextFiveHours"></activity>
+        <activity android:name=".NextFiveHours" />
+        <activity android:name=".TwoDayTemp" />
+        <activity android:name=".WeekForecastTemp" />
+        <activity android:name=".PastTemperatureTemp"></activity>
     </application>
 
 </manifest>

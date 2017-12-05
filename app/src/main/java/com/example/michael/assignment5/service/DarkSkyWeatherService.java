@@ -5,6 +5,9 @@ import android.os.AsyncTask;
 
 import com.example.michael.assignment5.data.Currently;
 import com.example.michael.assignment5.data.NextFive;
+import com.example.michael.assignment5.data.PastTemperature;
+import com.example.michael.assignment5.data.TwoDay;
+import com.example.michael.assignment5.data.WeekForecast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -81,15 +84,27 @@ public class DarkSkyWeatherService {
                         case 0:
                             Currently currently = new Currently();
                             currently.populate(data.optJSONObject("currently"));
-                            callba ck.serviceSuccess(currently);
+                            callback.serviceSuccess(currently);
                             break;
                         case 1:
-//                            NextFive nextFive = new NextFive();
-//                            nextFive.populate(data.optJSONObject("hourly"));
-//                            callback.serviceSuccess(nextFive);
+                            NextFive nextFive = new NextFive();
+                            nextFive.populate(data.optJSONObject("hourly"));
+                            callback.serviceSuccess(nextFive);
+                            break;
                         case 2:
+                            TwoDay twoDay = new TwoDay();
+                            twoDay.populate(data.optJSONObject("hourly"));
+                            callback.serviceSuccess(twoDay);
+                            break;
                         case 3:
+                            WeekForecast weekForecast = new WeekForecast();
+                            weekForecast.populate(data.optJSONObject("daily"));
+                            callback.serviceSuccess(weekForecast);
+                            break;
                         case 4:
+                            PastTemperature pastTemperature = new PastTemperature();
+                            pastTemperature.populate(data.optJSONObject("currently"));
+                            callback.serviceSuccess(pastTemperature);
                     }
 
                 } catch (JSONException e) {

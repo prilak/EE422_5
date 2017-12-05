@@ -14,7 +14,7 @@ import com.example.michael.assignment5.data.JSONPopulator;
 import com.example.michael.assignment5.service.DarkSkyWeatherService;
 
 public class CurrentWeather extends MainActivity {
-    private final int CURRENT_WEATHER = 0;
+    private static final int CURRENT_WEATHER = 0;
 
 
     private TextView temperatureTextView;
@@ -54,6 +54,7 @@ public class CurrentWeather extends MainActivity {
     }
     private void goToHome(){
         Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra("coordinates", coordinates);
         startActivity(intent);
 
     }

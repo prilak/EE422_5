@@ -26,6 +26,10 @@ import android.widget.Toast;
 import com.example.michael.assignment5.data.Currently;
 
 import com.example.michael.assignment5.data.JSONPopulator;
+import com.example.michael.assignment5.data.NextFive;
+import com.example.michael.assignment5.data.PastTemperature;
+import com.example.michael.assignment5.data.TwoDay;
+import com.example.michael.assignment5.data.WeekForecast;
 import com.example.michael.assignment5.service.DarkSkyWeatherService;
 import com.example.michael.assignment5.service.WeatherServiceCallback;
 
@@ -45,10 +49,19 @@ public class MainActivity extends AppCompatActivity implements WeatherServiceCal
     private ProgressDialog dialog;
     private String coordinates;
 
+
+    private Button currentWeather;
+    private Button coordinatesButton;
+    private Button nextFiveButton;
+    private Button pastTemperatureButton;
+    private Button twoDayButton;
+    private Button weekForecastButton;
     @Override
     protected void onResume() {
         super.onResume();
         coordinates = getIntent().getStringExtra("coordinates");
+
+
     }
 
     @Override
@@ -58,8 +71,14 @@ public class MainActivity extends AppCompatActivity implements WeatherServiceCal
         coordinates = "42.3601,-71.0589";
         temperatureTextView = (TextView) findViewById(R.id.temperatureTextView);
         humidityTextView = (TextView) findViewById(R.id.humidityTextView);
-        Button coordinatesButton = (Button) findViewById(R.id.button3);
+
+        currentWeather = (Button) findViewById(R.id.currentWeather);
+        nextFiveButton = (Button) findViewById(R.id.nextFiveHours);
+        pastTemperatureButton = (Button) findViewById(R.id.pastWeather);
+        twoDayButton = (Button) findViewById(R.id.averageTwoDays);
+        weekForecastButton = (Button) findViewById(R.id.nextWeek);
         // Location services
+        coordinatesButton = (Button) findViewById(R.id.button3);
 
         service = new DarkSkyWeatherService(this, CURRENT_WEATHER, "");
 //        dialog = new ProgressDialog(this);
@@ -67,7 +86,11 @@ public class MainActivity extends AppCompatActivity implements WeatherServiceCal
 //        dialog.show();
 
         service.refreshWeather(coordinates);
-        Button currentWeather = (Button) findViewById(R.id.currentWeather);
+        enableButtons();
+
+    }
+
+    private void enableButtons() {
         currentWeather.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -82,9 +105,41 @@ public class MainActivity extends AppCompatActivity implements WeatherServiceCal
 
             }
         });
+
+        nextFiveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MainActivity.this, NextFiveHours.class);
+                i.putExtra("coordinates", coordinates);
+                startActivity(i);
+            }
+        });
+        twoDayButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MainActivity.this, TwoDayTemp.class);
+                i.putExtra("coordinates", coordinates);
+                startActivity(i);
+            }
+        });
+        weekForecastButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MainActivity.this, WeekForecastTemp.class);
+                i.putExtra("coordinates", coordinates);
+                startActivity(i);
+            }
+        });
+        pastTemperatureButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MainActivity.this, PastTemperatureTemp.class);
+                i.putExtra("coordinates", coordinates);
+                startActivity(i);
+            }
+        });
+
     }
-
-
 
 
     private void goToCurrentWeatherActivity(){
@@ -97,8 +152,28 @@ public class MainActivity extends AppCompatActivity implements WeatherServiceCal
     @Override
     public void serviceSuccess(Currently data) {
         temperatureTextView.setText(Double.toString(data.getTemperature()));
-        humidityTextView.setText(String.format(Locale.ENGLISH, "humidity is %.04f", data.getHumidity()));
+        humidityTextView.setText(String.format(Locale.ENGLISH, "humidity is %.4f", data.getHumidity()));
 //        dialog.hide();
+    }
+
+    @Override
+    public void serviceSuccess(NextFive data) {
+
+    }
+
+    @Override
+    public void serviceSuccess(PastTemperature data) {
+
+    }
+
+    @Override
+    public void serviceSuccess(TwoDay data) {
+
+    }
+
+    @Override
+    public void serviceSuccess(WeekForecast data) {
+
     }
 
     @Override
