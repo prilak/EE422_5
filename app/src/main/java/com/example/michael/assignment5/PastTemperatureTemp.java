@@ -40,7 +40,7 @@ public class PastTemperatureTemp extends AppCompatActivity implements WeatherSer
 
         startButton = (Button) findViewById(R.id.startButton);
         returnButton = (Button) findViewById(R.id.returnButton);
-        temperature = (TextView) findViewById(R.id.averageTemp);
+        temperature = (TextView) findViewById(R.id.temperatureTextView);
         yearInput = (EditText) findViewById(R.id.yearInput);
         monthInput = (EditText) findViewById(R.id.monthInput);
         dayInput = (EditText) findViewById(R.id.dayInput);
@@ -48,17 +48,21 @@ public class PastTemperatureTemp extends AppCompatActivity implements WeatherSer
 
         enableButtons(this);
 
-
     }
 
     private void enableButtons(final PastTemperatureTemp callback) {
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String year = callback.getYearInput().getText().toString();
-                String month = callback.getMonthInput().getText().toString();
-                String day = callback.getDayInput().getText().toString();
-                String hour = callback.getHourInput().getText().toString();
+                String year = "";
+                String month = "";
+                String day = "";
+                String hour = "";
+
+                year = yearInput.getText().toString();
+                month = monthInput.getText().toString();
+                day = dayInput.getText().toString();
+                hour = hourInput.getText().toString();
                 String time = year + "-" + month + "-" + day + "T" + hour + ":00:00";
                 //temperature.setText(time);
                 service = new DarkSkyWeatherService(callback, PAST_TEMPERATURE, time);
@@ -66,6 +70,7 @@ public class PastTemperatureTemp extends AppCompatActivity implements WeatherSer
 
             }
         });
+
         returnButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -89,6 +94,10 @@ public class PastTemperatureTemp extends AppCompatActivity implements WeatherSer
 
     public EditText getYearInput() {
         return yearInput;
+    }
+
+    public TextView getTemperature() {
+        return temperature;
     }
 
     @Override
